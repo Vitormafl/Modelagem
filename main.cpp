@@ -11,8 +11,8 @@ int main() {
 
     Aresta a1 = Aresta(p1, p2);
     
-    Vetor v1(-1, 0);
-    Vetor v2(1 , 0);
+    Vetor v1(1, 0);
+    Vetor v2(-3 , -4);
    
 
     Vetor v3 = multEscalar(5.0, v2); 
