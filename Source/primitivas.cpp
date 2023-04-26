@@ -30,3 +30,13 @@ bool isCounterClockWise(Vetor a, Vetor b){
     else 
         return false;
 };
+
+double distância(Vetor a, Vetor b){
+    Vetor c(a.x - b.x, a.y - b.y);
+    return norma(c);
+};
+
+double angulo(Vetor a, Vetor b){
+    double theta = acos(prodEscalar(a,b)/(norma(a)*norma(b)));
+    return theta;
+};

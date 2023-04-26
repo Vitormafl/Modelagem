@@ -10,4 +10,7 @@ double norma(Vetor a);
 double prodVetorial(Vetor a, Vetor b);
 bool isCounterClockWise(Vetor a, Vetor b); // retorna verdadeiro caso b esteja a esquerda de a
 
+double distância(Vetor a, Vetor b);
+double angulo(Vetor a, Vetor b);
+
 #endif
