@@ -1,6 +1,8 @@
 #ifndef PONTO_H 
 #define PONTO_H
 
+#include <math.h>
+
 class Ponto
 {
     public: 
