@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Source/aresta.h"
 #include "Source/primitivas.h"
+#include "Source/poligono.h"
 
 using namespace std;
 
@@ -21,9 +22,10 @@ int main() {
    
     Triangulo t1(p1,p2,p5);
 
-    Vetor v3 = multEscalar(5.0, v2); 
+    Poligono p(p2);
+    p.inserirPonto(p3);
 
-    cout << areaTriangulo(t1) << endl; 
+    cout << p.vetor_de_pontos[1].y << endl; 
 
     return 0;
 }
