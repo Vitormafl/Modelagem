@@ -11,13 +11,16 @@ int main() {
     Ponto p2( 3, 0);
     Ponto p3(3,6);
     Ponto p4(-3,6);
-    Ponto p5( 3, 6);
+    Ponto p5( 0, 10);
 
 
     Poligono p(p1);
-    p.inserirPonto(p4);
-    p.inserirPonto(p3);
     p.inserirPonto(p2);
+    p.inserirPonto(p3);
+    p.inserirPonto(p5);
+    p.inserirPonto(p4);
+
+    p.setPoligono();
 
     cout << p.areaPoligono() << endl; 
 
