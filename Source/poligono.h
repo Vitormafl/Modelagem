@@ -5,6 +5,7 @@
 #include "triangulo.h"
 #include "primitivas.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 class Poligono

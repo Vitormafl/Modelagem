@@ -15,14 +15,12 @@ int main() {
 
 
     Poligono p(p1);
-    p.inserirPonto(p2);
+    p.inserirPonto(p4);
     p.inserirPonto(p3);
     p.inserirPonto(p5);
-    p.inserirPonto(p4);
+    p.inserirPonto(p2);
 
-    p.setPoligono();
-
-    cout << p.areaPoligono() << endl; 
+    cout << p.isCounterClockWise << endl; 
 
     return 0;
 }

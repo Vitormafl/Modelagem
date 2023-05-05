@@ -12,9 +12,9 @@ void Poligono::inserirPonto(Ponto p1){
     this->vetor_de_pontos.push_back(p1);
     this->qnt_pontos += 1;
 
-    //if (this->qnt_pontos > 2){
-    //    this->setPoligono();
-    //};
+    if (this->qnt_pontos > 2){
+        this->setPoligono();
+    };
 };
 
 double Poligono::areaPoligono(){
@@ -28,14 +28,33 @@ double Poligono::areaPoligono(){
     };
 
     for (int j = 0; j < this->qnt_pontos; j++){
-        t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[j+2]);
 
-        if (ccwTriangulo(t) == true){
-            isCCW += 1;
+        if (j == this->qnt_pontos - 2){
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[0]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
+        }
+
+        else if (j == this->qnt_pontos - 1){
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[0], this->vetor_de_pontos[1]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
+        }
+
+        else{
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[j+2]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
         };
     };
 
-    if (isCCW == 6){
+    if (isCCW == this->qnt_pontos){
         this->isCounterClockWise = true;
         this->isConvex = true;
         return area;
@@ -56,15 +75,36 @@ void Poligono::setPoligono(){
     Triangulo t;
 
     for (int j = 0; j < this->qnt_pontos; j++){
-        t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[j+2]);
 
-        if (ccwTriangulo(t) == true){
-            isCCW += 1;
+        if (j == this->qnt_pontos - 2){
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[0]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
+        }
+
+        else if (j == this->qnt_pontos - 1){
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[0], this->vetor_de_pontos[1]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
+        }
+
+        else{
+            t = Triangulo(this->vetor_de_pontos[j], this->vetor_de_pontos[j+1], this->vetor_de_pontos[j+2]);
+
+            if (ccwTriangulo(t) == true){
+                isCCW += 1;
+            };
         };
     };
 
-    if (isCCW == 6){
-        this->isCounterClockWise= true;
+    this->isConvex = false;
+
+    if (isCCW == this->qnt_pontos){
+        this->isCounterClockWise = true;
         this->isConvex = true;
     };
 
@@ -72,6 +112,4 @@ void Poligono::setPoligono(){
         this->isCounterClockWise = false;
         this->isConvex = true;
     };
-
-    this->isConvex = false;
 };
