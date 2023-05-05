@@ -77,6 +77,17 @@ double pseudoAngulo(Vetor a){
     return 8 - (-a.y)/a.x;
 };
 
+double pseudoAngulo(Vetor a, Vetor b){
+    double va = pseudoAngulo(a);
+    double vb = pseudoAngulo(b);
+
+    if (va > vb){
+        return (8 - va + vb);
+    };
+
+    return (vb - va);
+};
+
 bool intersecçãoSegmentos(Aresta a, Aresta b){
     //Vetores partindo de a.p1
     Vetor va1(a.p2.x - a.p1.x, a.p2.y - a.p1.y);

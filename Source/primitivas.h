@@ -18,6 +18,7 @@ double distância(Vetor a, Vetor b);
 double angulo(Vetor a, Vetor b);
 double anguloBase(Vetor a);
 double pseudoAngulo(Vetor a);
+double pseudoAngulo(Vetor a, Vetor b);
 
 bool intersecçãoSegmentos(Aresta a, Aresta b);
 bool ccwTriangulo(Triangulo a);

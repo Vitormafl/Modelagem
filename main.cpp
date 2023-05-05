@@ -14,13 +14,16 @@ int main() {
     Ponto p5( 0, 10);
 
 
-    Poligono p(p1);
-    p.inserirPonto(p4);
-    p.inserirPonto(p3);
-    p.inserirPonto(p5);
-    p.inserirPonto(p2);
+    //Poligono p(p1);
+    //p.inserirPonto(p4);
+    //p.inserirPonto(p5);
+    //p.inserirPonto(p3);
+    //p.inserirPonto(p2);
 
-    cout << p.isCounterClockWise << endl; 
+    Vetor v1(-1,0);
+    Vetor v2(0,1);
+
+    cout << pseudoAngulo(v2,v1) << endl; 
 
     return 0;
 }
