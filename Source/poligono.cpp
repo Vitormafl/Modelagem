@@ -6,7 +6,7 @@ Poligono::Poligono(Ponto p1)
 {
     this->qnt_pontos = 1;
     this->vetor_de_pontos.push_back(p1);
-};
+}; 
 
 void Poligono::inserirPonto(Ponto p1){
     this->vetor_de_pontos.push_back(p1);

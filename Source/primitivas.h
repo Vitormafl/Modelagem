@@ -3,9 +3,14 @@
 
 #define PI 3.14159265358979323846
 
+#include <iostream>
 #include "vetor.h"
 #include "aresta.h"
 #include "triangulo.h"
+#include "poligono.h"
+
+Ponto k(1,2);
+Poligono j(k);
 
 Vetor somaVetorial(Vetor a, Vetor b);
 Vetor multEscalar(float lambda, Vetor a);
@@ -24,5 +29,8 @@ bool intersecçãoSegmentos(Aresta a, Aresta b);
 bool ccwTriangulo(Triangulo a);
 double areaTriangulo(Triangulo a);
 
+bool pontoEmTriangulo(Triangulo t, Ponto p);
+bool pontoEmPoligonoTiro(Poligono p, Ponto p1);
+//bool pontoEmPoligono(Poligono pol, Ponto p);
 
-#endif
+#endif 

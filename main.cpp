@@ -13,17 +13,23 @@ int main() {
     Ponto p4(-3,6);
     Ponto p5( 0, 10);
 
+    Ponto p6(0,2);
 
-    //Poligono p(p1);
-    //p.inserirPonto(p4);
-    //p.inserirPonto(p5);
-    //p.inserirPonto(p3);
-    //p.inserirPonto(p2);
 
-    Vetor v1(-1,0);
-    Vetor v2(0,1);
+    Poligono p(p1);
+    p.inserirPonto(p2);
+    p.inserirPonto(p3);
+    p.inserirPonto(p5);
+    p.inserirPonto(p4);
 
-    cout << pseudoAngulo(v2,v1) << endl; 
+    //Vetor v1(-1,0);
+    //Vetor v2(0,1);
+
+    //Triangulo t(p4,p3,p5);
+
+    //pontoEmTriangulo(t, p6);
+
+    cout << pontoEmPoligonoTiro(p, p6) << endl; 
 
     return 0;
 }
