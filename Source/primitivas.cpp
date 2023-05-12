@@ -89,14 +89,22 @@ double pseudoAngulo(Vetor a, Vetor b){
 };
 
 bool intersecçãoSegmentos(Aresta a, Aresta b){
+
+    //Operação para extender levemente o final da aresta b a fim de gerar interseção no ponto final
+    Vetor vetor_de_correção(b.p2.x - b.p1.x, b.p2.y - b.p1.y);
+    vetor_de_correção = multEscalar(0.000001, vetor_de_correção);
+
+    Ponto corrigido = Ponto(b.p2.x + vetor_de_correção.x, b.p2.y + vetor_de_correção.y);
+    Aresta c(b.p1, corrigido);
+
     //Vetores partindo de a.p1
     Vetor va1(a.p2.x - a.p1.x, a.p2.y - a.p1.y);
-    Vetor va2(b.p1.x - a.p1.x, b.p1.y - a.p1.y);
-    Vetor va3(b.p2.x - a.p1.x, b.p2.y - a.p1.y);
+    Vetor va2(c.p1.x - a.p1.x, c.p1.y - a.p1.y);
+    Vetor va3(c.p2.x - a.p1.x, c.p2.y - a.p1.y);
     //Vetores partindo de b.p1
-    Vetor vb1(b.p2.x - b.p1.x, b.p2.y - b.p1.y);
-    Vetor vb2(a.p1.x - b.p1.x, a.p1.y - b.p1.y);
-    Vetor vb3(a.p2.x - b.p1.x, a.p2.y - b.p1.y);
+    Vetor vb1(c.p2.x - c.p1.x, c.p2.y - c.p1.y);
+    Vetor vb2(a.p1.x - c.p1.x, a.p1.y - c.p1.y);
+    Vetor vb3(a.p2.x - c.p1.x, a.p2.y - c.p1.y);
 
     double pv1 = prodVetorial(va1, va2);
     double pv2 = prodVetorial(va1, va3);

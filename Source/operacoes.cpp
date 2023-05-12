@@ -26,16 +26,24 @@ bool pontoEmPoligonoTiro(Poligono P, Ponto p){
 
     for (int i = 0; i < P.qnt_pontos; i++){
         if (i == P.qnt_pontos - 1){
-
-            b = Aresta(P.vetor_de_pontos[i], P.vetor_de_pontos[0]);
-
+            if (P.vetor_de_pontos[i].y > P.vetor_de_pontos[0].y ){
+                b = Aresta(P.vetor_de_pontos[0], P.vetor_de_pontos[i]);
+            }
+            else{
+                b = Aresta(P.vetor_de_pontos[i], P.vetor_de_pontos[0]);
+            }
+                
             if (intersecçãoSegmentos(a,b) == true){
                 qnt_interseções += 1;
             }
         }
         else {
-
-            b = Aresta(P.vetor_de_pontos[i], P.vetor_de_pontos[i+1]);
+            if (P.vetor_de_pontos[i].y > P.vetor_de_pontos[i+1].y){
+                b = Aresta(P.vetor_de_pontos[i+1], P.vetor_de_pontos[i]);
+            }
+            else{
+                b = Aresta(P.vetor_de_pontos[i], P.vetor_de_pontos[i+1]);
+            }
 
             if (intersecçãoSegmentos(a,b) == true){
                 qnt_interseções += 1;

@@ -12,21 +12,23 @@ int main() {
     Ponto p2( 3, 0);
     Ponto p3(3,6);
     Ponto p4(-3,6);
-    Ponto p5( 0, 10);
-    Ponto p6(3,6);
-
-    Ponto p7(0,0);
-    Ponto p8(0,5);
-
+    Ponto p5( 0, -4);
+    Ponto p6(-10,-4);
 
     Poligono p(p1);
+    p.inserirPonto(p5);
     p.inserirPonto(p2);
     p.inserirPonto(p3);
-    p.inserirPonto(p5);
     p.inserirPonto(p4);
 
-    Aresta a1(p1,p2);
-    Aresta a2(p7,p8);
+    Ponto p7(0,0);
+    Ponto p8(100,0);
+    Ponto p9(3,0);
+    Ponto p10(5,0);
+
+
+    Aresta a1(p7,p8);
+    Aresta a2(p9,p10);
 
     //Vetor v1(-1,0);
     //Vetor v2(0,1);
@@ -35,7 +37,7 @@ int main() {
 
     //pontoEmTriangulo(t, p6);
 
-    cout << intersecçãoSegmentos(a1,a2) << endl; 
+    cout << pontoEmPoligonoTiro(p,p6) << endl; 
 
     return 0;
 }
