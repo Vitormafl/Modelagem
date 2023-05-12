@@ -1,8 +1,6 @@
 #ifndef POLIGONO_H
 #define POLIGONO_H
 
-#include "ponto.h"
-#include "triangulo.h"
 #include "primitivas.h"
 #include <vector>
 #include <iostream>

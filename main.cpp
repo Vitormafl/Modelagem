@@ -2,6 +2,7 @@
 #include "Source/aresta.h"
 #include "Source/primitivas.h"
 #include "Source/poligono.h"
+#include "Source/operacoes.h"
 
 using namespace std;
 
@@ -12,8 +13,10 @@ int main() {
     Ponto p3(3,6);
     Ponto p4(-3,6);
     Ponto p5( 0, 10);
+    Ponto p6(3,6);
 
-    Ponto p6(0,2);
+    Ponto p7(0,0);
+    Ponto p8(0,5);
 
 
     Poligono p(p1);
@@ -22,6 +25,9 @@ int main() {
     p.inserirPonto(p5);
     p.inserirPonto(p4);
 
+    Aresta a1(p1,p2);
+    Aresta a2(p7,p8);
+
     //Vetor v1(-1,0);
     //Vetor v2(0,1);
 
@@ -29,7 +35,7 @@ int main() {
 
     //pontoEmTriangulo(t, p6);
 
-    cout << pontoEmPoligonoTiro(p, p6) << endl; 
+    cout << intersecçãoSegmentos(a1,a2) << endl; 
 
     return 0;
 }
