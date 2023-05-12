@@ -5,6 +5,6 @@
 
 bool pontoEmTriangulo(Triangulo t, Ponto p);
 bool pontoEmPoligonoTiro(Poligono p, Ponto p1);
-//bool pontoEmPoligono(Poligono pol, Ponto p);
+bool pontoEmPoligonoRotação(Poligono p, Ponto p1);
 
 #endif

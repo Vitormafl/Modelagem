@@ -57,3 +57,26 @@ bool pontoEmPoligonoTiro(Poligono P, Ponto p){
     return 1;
 
 };
+
+bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
+    float soma_angulos = 0;
+    Vetor a,b;
+
+    for (int i = 0; i < p.qnt_pontos; i++){
+        if (i == p.qnt_pontos - 1){
+            a = Vetor(p.vetor_de_pontos[i].x - p1.x, p.vetor_de_pontos[i].y - p1.y);
+            b = Vetor(p.vetor_de_pontos[0].x - p1.x, p.vetor_de_pontos[0].y - p1.y);
+        }
+        else {
+            a = Vetor(p.vetor_de_pontos[i].x - p1.x, p.vetor_de_pontos[i].y - p1.y);
+            b = Vetor(p.vetor_de_pontos[i+1].x - p1.x, p.vetor_de_pontos[i+1].y - p1.y);
+        }
+
+        soma_angulos += pseudoAngulo(a,b);
+    };
+
+    if (soma_angulos == -8 || soma_angulos == 8)
+        return 1;
+    return 0;
+
+};

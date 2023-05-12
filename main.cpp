@@ -13,7 +13,7 @@ int main() {
     Ponto p3(3,6);
     Ponto p4(-3,6);
     Ponto p5( 0, -4);
-    Ponto p6(-10,-4);
+    Ponto p6(10,0);
 
     Poligono p(p1);
     p.inserirPonto(p5);
@@ -37,7 +37,7 @@ int main() {
 
     //pontoEmTriangulo(t, p6);
 
-    cout << pontoEmPoligonoTiro(p,p6) << endl; 
+    cout << pontoEmPoligonoRotação(p,p6) << endl; 
 
     return 0;
 }
