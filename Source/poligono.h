@@ -4,6 +4,7 @@
 #include "primitivas.h"
 #include <vector>
 #include <iostream>
+#include "../Sorts/Quicksort.h"
 
 using namespace std;
 class Poligono
@@ -17,6 +18,7 @@ class Poligono
         Poligono();
         Poligono(Ponto p1);
 
+        void orderPoligono();
         void inserirPonto(Ponto p);
         void setPoligono();
         double areaPoligono();

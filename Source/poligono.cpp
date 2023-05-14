@@ -8,6 +8,34 @@ Poligono::Poligono(Ponto p1)
     this->vetor_de_pontos.push_back(p1);
 }; 
 
+void Poligono::orderPoligono(){
+    Ponto medio = Ponto(0,0);
+    Ponto ponto_volta;
+    vector<pontoAngulo> vetor_ponto_angulo;
+    vector<Ponto> vp;
+    pontoAngulo pa;
+
+    for (int i = 0; i < this->qnt_pontos; i++){
+        medio = Ponto(medio.x + (this->vetor_de_pontos[i].x/this->qnt_pontos) , medio.y + (this->vetor_de_pontos[i].y/this->qnt_pontos));
+    }
+
+    for (int i = 0; i < this->qnt_pontos; i++){
+        Vetor v(this->vetor_de_pontos[i].x - medio.x, this->vetor_de_pontos[i].y - medio.y);
+        pa.p = Ponto(this->vetor_de_pontos[i].x - medio.x, this->vetor_de_pontos[i].y - medio.y);
+        pa.a = anguloBase(v);
+        vetor_ponto_angulo.push_back(pa);
+    }    
+
+    quickSort(vetor_ponto_angulo, 0, this->qnt_pontos-1);
+
+    for (int i = 0; i < this->qnt_pontos; i++){
+        ponto_volta = Ponto(vetor_ponto_angulo[i].p.x + medio.x, vetor_ponto_angulo[i].p.y + medio.y);
+        vp.push_back(ponto_volta);
+    }
+
+    this->vetor_de_pontos = vp;
+};
+
 void Poligono::inserirPonto(Ponto p1){
     this->vetor_de_pontos.push_back(p1);
     this->qnt_pontos += 1;
@@ -25,7 +53,7 @@ double Poligono::areaPoligono(){
     for (int i = 0; i < this->qnt_pontos - 2; i++){
         t = Triangulo(this->vetor_de_pontos[0], this->vetor_de_pontos[i+1], this->vetor_de_pontos[i+2]);
         area += areaTriangulo(t);
-    };
+    }
 
     for (int j = 0; j < this->qnt_pontos; j++){
 

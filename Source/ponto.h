@@ -15,4 +15,9 @@ class Ponto
         Ponto(float x, float y);
 };
 
+struct pontoAngulo{
+    Ponto p;
+    double a;
+};
+
 #endif
