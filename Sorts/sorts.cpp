@@ -1,4 +1,4 @@
-#include "Quicksort.h"
+#include "sorts.h"
 
 // Função auxiliar para trocar dois elementos do vetor
 void swap(pontoAngulo& a, pontoAngulo& b) {

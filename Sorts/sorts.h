@@ -1,5 +1,5 @@
-#ifndef QUICKSORT_H
-#define QUICKSORT_H
+#ifndef SORTS_H
+#define SORTS_H
 
 #include <iostream>
 #include <vector>

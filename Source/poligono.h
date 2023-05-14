@@ -4,7 +4,7 @@
 #include "primitivas.h"
 #include <vector>
 #include <iostream>
-#include "../Sorts/Quicksort.h"
+#include "../Sorts/sorts.h"
 
 using namespace std;
 class Poligono
