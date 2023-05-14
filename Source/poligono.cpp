@@ -15,6 +15,9 @@ void Poligono::orderPoligono(){
     vector<Ponto> vp;
     pontoAngulo pa;
 
+    int indice = 0;
+    double y_min;
+
     for (int i = 0; i < this->qnt_pontos; i++){
         medio = Ponto(medio.x + (this->vetor_de_pontos[i].x/this->qnt_pontos) , medio.y + (this->vetor_de_pontos[i].y/this->qnt_pontos));
     }
@@ -28,9 +31,28 @@ void Poligono::orderPoligono(){
 
     quickSort(vetor_ponto_angulo, 0, this->qnt_pontos-1);
 
+    y_min = vetor_ponto_angulo[0].p.y;
+
+    for (int i = 1; i < this->qnt_pontos; i++){
+        if (vetor_ponto_angulo[i].p.y < y_min){
+            y_min = vetor_ponto_angulo[i].p.y;
+            indice = i;
+        }
+    } 
+
     for (int i = 0; i < this->qnt_pontos; i++){
-        ponto_volta = Ponto(vetor_ponto_angulo[i].p.x + medio.x, vetor_ponto_angulo[i].p.y + medio.y);
-        vp.push_back(ponto_volta);
+        
+        if (indice < this->qnt_pontos){
+            ponto_volta = Ponto(vetor_ponto_angulo[indice].p.x + medio.x, vetor_ponto_angulo[indice].p.y + medio.y);
+            vp.push_back(ponto_volta);
+        }
+        else{
+            indice -= this->qnt_pontos;
+            ponto_volta = Ponto(vetor_ponto_angulo[indice].p.x + medio.x, vetor_ponto_angulo[indice].p.y + medio.y);
+            vp.push_back(ponto_volta);
+            indice += this->qnt_pontos;
+        }
+        indice += 1;
     }
 
     this->vetor_de_pontos = vp;

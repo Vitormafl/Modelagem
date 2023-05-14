@@ -17,6 +17,7 @@ int main() {
     Ponto p4(-3,6);
     Ponto p5( 0, -4);
     Ponto p6(4,3);
+    Ponto p7(-2,-6);
 
     Poligono p(p5);
     p.inserirPonto(p1);
@@ -24,6 +25,7 @@ int main() {
     p.inserirPonto(p2);
     p.inserirPonto(p3);
     p.inserirPonto(p6);
+    p.inserirPonto(p7);
 
     cout << "vetor de pontos inicial: "<< endl;
 

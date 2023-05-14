@@ -80,3 +80,10 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
     return 0;
 
 };
+
+Poligono Graham(Poligono P){
+
+    P.orderPoligono();
+
+    return P;
+};
