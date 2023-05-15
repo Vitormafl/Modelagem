@@ -31,6 +31,12 @@ bool isCounterClockWise(Vetor a, Vetor b){
         return false;
 };
 
+bool mesmoPonto(Ponto p1, Ponto p2){
+    if (p1.x == p2.x && p1.y == p2.y)
+        return true;
+    return false;
+};
+
 double distância(Vetor a, Vetor b){
     Vetor c(a.x - b.x, a.y - b.y);
     return norma(c);

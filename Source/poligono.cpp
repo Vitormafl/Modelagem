@@ -1,6 +1,8 @@
 #include "poligono.h"
 
-Poligono::Poligono(){};
+Poligono::Poligono(){
+    this->qnt_pontos = 0;    
+};
 
 Poligono::Poligono(Ponto p1)
 {

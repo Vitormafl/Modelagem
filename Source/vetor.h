@@ -12,6 +12,8 @@ class Vetor
         Vetor();
 
         Vetor(double x, double y);
+
+        Vetor(Ponto origem, Ponto destino);
 };
 
 #endif

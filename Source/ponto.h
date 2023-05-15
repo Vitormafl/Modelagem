@@ -13,6 +13,7 @@ class Ponto
         Ponto();
 
         Ponto(float x, float y);
+
 };
 
 struct pontoAngulo{

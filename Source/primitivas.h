@@ -14,6 +14,7 @@ double prodEscalar(Vetor a, Vetor b);
 double norma(Vetor a);
 double prodVetorial(Vetor a, Vetor b);
 bool isCounterClockWise(Vetor a, Vetor b); // retorna verdadeiro caso b esteja a esquerda de a
+bool mesmoPonto(Ponto p1, Ponto p2);
 
 double distância(Vetor a, Vetor b);
 double angulo(Vetor a, Vetor b);
