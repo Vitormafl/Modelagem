@@ -121,20 +121,20 @@ int teste3(){
     p.inserirPonto(p5);
     p.inserirPonto(p6);
 
-    cout << "vetor de pontos inicial: "<< endl;
-
-    for (int i = 0; i < p.qnt_pontos; i++){
-        cout << "Ponto: (" << p.vetor_de_pontos[i].x << ", " << p.vetor_de_pontos[i].y << ") " << endl; 
-    };
-
-    cout << "teste 3" << endl;
+    //cout << "vetor de pontos inicial: "<< endl;
+//
+    //for (int i = 0; i < p.qnt_pontos; i++){
+    //    cout << "Ponto: (" << p.vetor_de_pontos[i].x << ", " << p.vetor_de_pontos[i].y << ") " << endl; 
+    //};
+//
+    //cout << "teste 3" << endl;
     Poligono feixo = Graham(p);
-
-    cout << "feixo convexo: "<< endl;
-
-    for (Ponto ponto : feixo.vetor_de_pontos){
-        cout << "Ponto: (" << ponto.x << ", " << ponto.y << ") " << endl; 
-    };
+//
+    //cout << "feixo convexo: "<< endl;
+//
+    //for (Ponto ponto : feixo.vetor_de_pontos){
+    //    cout << "Ponto: (" << ponto.x << ", " << ponto.y << ") " << endl; 
+    //};
 
     return pontosValidos(feixo.vetor_de_pontos, pontos_validos);
 }

@@ -81,43 +81,74 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
 
 };
 
+//Poligono Graham(Poligono P){
+//    vector<Ponto> feixo_convexo;
+//    Poligono feixo = Poligono();
+//    Ponto anterior, atual, proximo;
+//
+//    P.orderPoligono();
+//
+//    feixo_convexo.push_back(P.vetor_de_pontos[0]);
+//    //feixo_convexo.push_back(P.vetor_de_pontos[1]);
+//    //feixo_convexo.push_back(P.vetor_de_pontos[2]);
+//
+//
+//    for(int i=2; i < P.qnt_pontos;){
+//        // a ultima verificação tu tem que mudar os indices pra poder usar o p[0]
+//        anterior = feixo_convexo[feixo_convexo.size()-1];
+//        atual    = P.vetor_de_pontos[i%P.qnt_pontos];
+//        proximo  = P.vetor_de_pontos[(i+1)%P.qnt_pontos];    
+//
+//        Vetor a = Vetor(anterior, atual);
+//        Vetor b = Vetor(atual, proximo);
+//
+//        if(isCounterClockWise(a,b)){
+//            feixo_convexo.push_back(atual);
+//            i++;
+//        }
+//        else if(feixo_convexo.size() > 1){
+//            feixo_convexo.pop_back();
+//        }
+//        else{
+//            i++;
+//        }
+//    }
+//
+//    for (Ponto ponto : feixo_convexo){
+//        feixo.inserirPonto(ponto);
+//    }
+//
+//    return feixo;
+//};
+
 Poligono Graham(Poligono P){
     vector<Ponto> feixo_convexo;
     Poligono feixo = Poligono();
     Ponto anterior, atual, proximo;
+    Vetor a,b;
+    int pontos_testados = 1;
 
     P.orderPoligono();
 
     feixo_convexo.push_back(P.vetor_de_pontos[0]);
-    //feixo_convexo.push_back(P.vetor_de_pontos[1]);
-    //feixo_convexo.push_back(P.vetor_de_pontos[2]);
 
+    while (pontos_testados < P.qnt_pontos){
+        a = Vetor(feixo_convexo[feixo_convexo.size()-1], P.vetor_de_pontos[pontos_testados]);
+        b = Vetor(feixo_convexo[feixo_convexo.size()-1], P.vetor_de_pontos[pontos_testados+1]);
 
-    for(int i=2; i < P.qnt_pontos;){
-        // a ultima verificação tu tem que mudar os indices pra poder usar o p[0]
-        anterior = feixo_convexo[feixo_convexo.size()-1];
-        atual    = P.vetor_de_pontos[i%P.qnt_pontos];
-        proximo  = P.vetor_de_pontos[(i+1)%P.qnt_pontos];    
-
-        Vetor a = Vetor(anterior, atual);
-        Vetor b = Vetor(atual, proximo);
-
-        if(isCounterClockWise(a,b)){
-            feixo_convexo.push_back(atual);
-            i++;
+        if (isCounterClockWise(a,b)){
+            feixo_convexo.push_back(P.vetor_de_pontos[pontos_testados]);
+            pontos_testados += 1;
         }
-        else if(feixo_convexo.size() > 1){
-            feixo_convexo.pop_back();
-        }
-        else{
-            i++;
+        else {
+            pontos_testados += 1;
         }
     }
 
-    for (Ponto ponto : feixo_convexo){
-        feixo.inserirPonto(ponto);
+    for (int i = 0; i < feixo_convexo.size(); i++){
+        feixo.inserirPonto(feixo_convexo[i]);
     }
 
-    return feixo;
+    return feixo;    
 };
 
