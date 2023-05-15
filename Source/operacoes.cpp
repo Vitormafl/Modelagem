@@ -124,23 +124,31 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
 Poligono Graham(Poligono P){
     vector<Ponto> feixo_convexo;
     Poligono feixo = Poligono();
-    Ponto anterior, atual, proximo;
     Vetor a,b;
     int pontos_testados = 1;
 
     P.orderPoligono();
 
     feixo_convexo.push_back(P.vetor_de_pontos[0]);
+    feixo_convexo.push_back(P.vetor_de_pontos[1]);
 
-    while (pontos_testados < P.qnt_pontos){
-        a = Vetor(feixo_convexo[feixo_convexo.size()-1], P.vetor_de_pontos[pontos_testados]);
-        b = Vetor(feixo_convexo[feixo_convexo.size()-1], P.vetor_de_pontos[pontos_testados+1]);
+    while (pontos_testados < P.qnt_pontos - 1){
 
-        if (isCounterClockWise(a,b)){
+        if (feixo_convexo.size() < 2){
             feixo_convexo.push_back(P.vetor_de_pontos[pontos_testados]);
             pontos_testados += 1;
         }
-        else {
+
+        a = Vetor(feixo_convexo[feixo_convexo.size()-2], feixo_convexo[feixo_convexo.size()-1]);
+        b = Vetor(feixo_convexo[feixo_convexo.size()-2], P.vetor_de_pontos[pontos_testados+1]);
+
+
+        if (isCounterClockWise(a,b)){
+            feixo_convexo.push_back(P.vetor_de_pontos[pontos_testados+1]);
+            pontos_testados += 1;
+        }
+        else{
+            feixo_convexo.pop_back();
             pontos_testados += 1;
         }
     }
@@ -152,3 +160,25 @@ Poligono Graham(Poligono P){
     return feixo;    
 };
 
+//Poligono Graham(Poligono P){
+//    vector<Ponto> feixo_convexo;
+//    Poligono feixo = Poligono();
+//    Vetor a,b;
+//    int contador = 1;
+//
+//    P.orderPoligono();
+//
+//    feixo_convexo.push_back(P.vetor_de_pontos[0]);
+//    
+//    while (contador < P.qnt_pontos){
+//        a = Vetor(feixo_convexo[feixo_convexo.size()-2], feixo_convexo[feixo_convexo.size()-1]);
+//        b = Vetor(feixo_convexo[feixo_convexo.size()-2], P.vetor_de_pontos[+1]);
+//    }
+//
+//
+//    for (int i = 0; i < feixo_convexo.size(); i++){
+//        feixo.inserirPonto(feixo_convexo[i]);
+//    }
+//
+//    return feixo;    
+//};
