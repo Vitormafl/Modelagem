@@ -81,75 +81,34 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
 
 };
 
-//Poligono Graham(Poligono P){
-//    vector<Ponto> feixo_convexo;
-//    Poligono feixo = Poligono();
-//    Ponto anterior, atual, proximo;
-//
-//    P.orderPoligono();
-//
-//    feixo_convexo.push_back(P.vetor_de_pontos[0]);
-//    //feixo_convexo.push_back(P.vetor_de_pontos[1]);
-//    //feixo_convexo.push_back(P.vetor_de_pontos[2]);
-//
-//
-//    for(int i=2; i < P.qnt_pontos;){
-//        // a ultima verificação tu tem que mudar os indices pra poder usar o p[0]
-//        anterior = feixo_convexo[feixo_convexo.size()-1];
-//        atual    = P.vetor_de_pontos[i%P.qnt_pontos];
-//        proximo  = P.vetor_de_pontos[(i+1)%P.qnt_pontos];    
-//
-//        Vetor a = Vetor(anterior, atual);
-//        Vetor b = Vetor(atual, proximo);
-//
-//        if(isCounterClockWise(a,b)){
-//            feixo_convexo.push_back(atual);
-//            i++;
-//        }
-//        else if(feixo_convexo.size() > 1){
-//            feixo_convexo.pop_back();
-//        }
-//        else{
-//            i++;
-//        }
-//    }
-//
-//    for (Ponto ponto : feixo_convexo){
-//        feixo.inserirPonto(ponto);
-//    }
-//
-//    return feixo;
-//};
-
 Poligono Graham(Poligono P){
-    vector<Ponto> feixo_convexo;
+    vector<Ponto> feixo_convexo, pontos_candidatos;
     Poligono feixo = Poligono();
     Vetor a,b;
-    int pontos_testados = 1;
+    int i = 1;
 
     P.orderPoligono();
 
     feixo_convexo.push_back(P.vetor_de_pontos[0]);
-    feixo_convexo.push_back(P.vetor_de_pontos[1]);
+    pontos_candidatos = P.vetor_de_pontos;
 
-    while (pontos_testados < P.qnt_pontos - 1){
+    while (i < pontos_candidatos.size()){
 
-        if (feixo_convexo.size() < 2){
-            feixo_convexo.push_back(P.vetor_de_pontos[pontos_testados]);
-            pontos_testados += 1;
-        }
-
-        a = Vetor(feixo_convexo[feixo_convexo.size()-2], feixo_convexo[feixo_convexo.size()-1]);
-        b = Vetor(feixo_convexo[feixo_convexo.size()-2], P.vetor_de_pontos[pontos_testados+1]);
+        a = Vetor(feixo_convexo[feixo_convexo.size()-1], pontos_candidatos[i]);
+        b = Vetor(feixo_convexo[feixo_convexo.size()-1], pontos_candidatos[(i+1)%pontos_candidatos.size()]);
 
 
         if (isCounterClockWise(a,b)){
-            feixo_convexo.push_back(P.vetor_de_pontos[pontos_testados+1]);
-            pontos_testados += 1;
+            feixo_convexo.push_back(pontos_candidatos[i]);
+            i += 1;
         }
         else{
-            feixo_convexo.pop_back();
-            pontos_testados += 1;
+            pontos_candidatos.erase(pontos_candidatos.begin() + i);
+
+            if (feixo_convexo.size() > 1){
+                feixo_convexo.pop_back();
+                i -= 1;
+            }
         }
     }
 
@@ -159,26 +118,3 @@ Poligono Graham(Poligono P){
 
     return feixo;    
 };
-
-//Poligono Graham(Poligono P){
-//    vector<Ponto> feixo_convexo;
-//    Poligono feixo = Poligono();
-//    Vetor a,b;
-//    int contador = 1;
-//
-//    P.orderPoligono();
-//
-//    feixo_convexo.push_back(P.vetor_de_pontos[0]);
-//    
-//    while (contador < P.qnt_pontos){
-//        a = Vetor(feixo_convexo[feixo_convexo.size()-2], feixo_convexo[feixo_convexo.size()-1]);
-//        b = Vetor(feixo_convexo[feixo_convexo.size()-2], P.vetor_de_pontos[+1]);
-//    }
-//
-//
-//    for (int i = 0; i < feixo_convexo.size(); i++){
-//        feixo.inserirPonto(feixo_convexo[i]);
-//    }
-//
-//    return feixo;    
-//};
