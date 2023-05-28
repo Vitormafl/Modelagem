@@ -167,9 +167,6 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     
     vector<int> superior = obterTangenteSuperior(esquerdo, direito);
 
-    superior[0] = direito.size()  - superior[0];
-    superior[1] = esquerdo.size() - superior[1];
-
     //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
     //fazer tal algoritmo...
 
