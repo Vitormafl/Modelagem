@@ -160,31 +160,7 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
 
     vector<Ponto> feixo;
 
-    //A tangente inferior é obtida através desse algoritmo
-    vector<Ponto> inferior = obterTangente(esquerdo,direito);
-    //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
-    //Perceba, se eu girar minha tela 180°, de modo que ela fique de cabeça para baixo,
-    //os polígonos permanescem os mesmos, mas suas posições se invertem,
-    //além disso, a tangente superior vira a inferior
-    //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
-    //Eu acho... testar depois
-    vector<Ponto> superior = obterTangente(direito, esquerdo);
-
-    //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
-    //fazer tal algoritmo...
-
-    return feixo;
-}
-
-vector<int> obterTangente(vector<Ponto> esquerdo, vector<Ponto> direito){
-
-    vector<int> tangente;
-
-    Triangulo trianguloE, trianguloD;
-    bool orientacao_esquerda, orientacao_direita;
-    int left,right;
-    int next_left, next_right;
-
+    int left, int right;
 
     //Lógica: 
     //pegar o índice do ponto mais a esquerda do lado esquerdo
@@ -198,6 +174,38 @@ vector<int> obterTangente(vector<Ponto> esquerdo, vector<Ponto> direito){
     for(int i = 0; i < direito.size(); i++)
         if(direito[i].x > direito[right].x)
             right = i;
+
+    //A tangente inferior é obtida através desse algoritmo
+    vector<Ponto> inferior = obterTangente(esquerdo,left,direito,right);
+
+
+    //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
+    //Perceba, se eu girar minha tela 180°, de modo que ela fique de cabeça para baixo,
+    //os polígonos permanescem os mesmos, mas suas posições se invertem,
+    //além disso, a tangente superior vira a inferior
+    //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
+    //Eu acho... testar depois
+    //Será que precisa inverter a ordem para manter os polígonos no sentido antiHorário? => provavelmente
+    vector<Ponto> superior = obterTangente(direito,right,esquerdo,left);
+
+    //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
+    //fazer tal algoritmo...
+    //p1 = inferior[0]; p2 = inferior[1]; p3 = superior[0]; p4 = superior[1]
+    //adiciona p1
+    //adiciona todos os pontos entre p2 e p3
+    //adiciona p3
+    //adiciona todos os pontos entre p4 e p1
+
+    return feixo;
+}
+
+vector<int> obterTangente(vector<Ponto> esquerdo, int left, vector<Ponto> direito, int right){
+
+    vector<int> tangente;
+
+    Triangulo trianguloE, trianguloD;
+    bool orientacao_esquerda, orientacao_direita;
+    int next_left, next_right;
     
     //Consegue o ponto counterclockwise antecessor ao esquerdo
     //O modulo faz isso ser uma operação circular, ou seja
