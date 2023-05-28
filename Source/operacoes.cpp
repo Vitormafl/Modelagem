@@ -120,15 +120,6 @@ vector<Ponto> Graham(vector<Ponto> pontos_candidatos){
     return feixo_convexo;    
 };
 
-vector<Ponto> merge(vector<Ponto> feixo_esquerdo, vector<Ponto> feixo_direito){
-
-    int e = feixo_esquerdo.size();
-    int d = feixo_direito.size();
-    int i = 0, j = 0;
-
-
-};
-
 vector<Ponto> mergeHull(vector<Ponto> pontos){
 
     vector<Ponto> feixo, esquerdo, direito, feixo_esquerdo, feixo_direito;
@@ -159,92 +150,76 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
 vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
 
     vector<Ponto> feixo;
+    Aresta t_inf, t_sup;
+    Triangulo t1, t2;
+    bool ot1, ot2;
 
-    int left, int right;
+    int flag_inf = 0, flag_sup = 0;
 
-    //A tangente inferior é obtida através desse algoritmo
-    vector<int> inferior = obterTangenteInferior(esquerdo,direito);
-    
-    vector<int> superior = obterTangenteSuperior(esquerdo, direito);
+    int maiorx = esquerdo[0].x, menorx = direito[0].x, i_maiorx = 0, i_menorx = 0;
+    int tie, tid, tse, tsd;
 
-    //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
-    //fazer tal algoritmo...
+    for(int i = 1; i < esquerdo.size(); i++){
+        if(esquerdo[i].x > maiorx)
+            maiorx = esquerdo[i].x;
+            i_maiorx = i;
+    }
 
-    //Adiciona a parte do polígono direito
-    //Pega o ponto do polígono direito da tangente inferior
-    //Vai até o começo da tangente superior adicionando todos pontos entre eles
-    for(int i = inferior[1]; i != superior[0]; i = (i + 1) % direito.size()){
+    for(int i = 1; i < direito.size(); i++){
+        if(direito[i].x < menorx)
+            menorx = direito[i].x;
+            i_menorx = i;
+    }
+
+    tie = i_maiorx;
+    tse = i_maiorx;
+    tid = i_menorx;
+    tsd = i_menorx; 
+
+    while (flag_inf != 1){
+        t1 = Triangulo(esquerdo[tie],esquerdo[(tie - 1 + esquerdo.size())%esquerdo.size()], direito[tid]);
+        t2 = Triangulo(direito[tid],direito[(tid + 1)%direito.size()], esquerdo[tie]);
+        ot1 = ccwTriangulo(t1);
+        ot2 = ccwTriangulo(t2);
+
+        if (!ot1 && !ot2){
+            tid = (tid + 1)%direito.size();
+        }
+        else if (ot1 && ot2){
+            tie = (tie - 1 + esquerdo.size())%esquerdo.size();
+        } 
+        else if (!ot1 && ot2){
+            flag_inf = 1;
+        }
+    }
+
+    while (flag_inf != 2){
+        t1 = Triangulo(esquerdo[tse],esquerdo[(tse + 1)%esquerdo.size()], direito[tsd]);
+        t2 = Triangulo(direito[tsd],direito[(tsd - 1 + direito.size())%direito.size()], esquerdo[tse]);
+        ot1 = ccwTriangulo(t1);
+        ot2 = ccwTriangulo(t2);
+
+        if (!ot1 && !ot2){
+            tse = (tse + 1)%esquerdo.size();
+        }
+        else if (ot1 && ot2){
+            tsd = (tsd - 1 + direito.size())%direito.size();
+        } 
+        else if (ot1 && !ot2){
+            flag_inf = 2;
+        }
+        
+    }
+
+    for (int i = tid; i != tsd; i = (i+1)%direito.size()){
         feixo.push_back(direito[i]);
-    }
-    feixo.push_back(direito[superior[0]]);
+    } 
+    feixo.push_back(direito[tsd]);
 
-    //Adiciona a parte do polígono esquerdo
-    for(int i = superior[1]; i != inferior[0]; i = (i + 1) % esquerdo.size()){
+    for (int i = tse; i != tie; i = (i+1)%esquerdo.size()){
         feixo.push_back(esquerdo[i]);
-    }
-    feixo.push_back(direito[inferior[0]]);
-
+    } 
+    feixo.push_back(esquerdo[tie]);
+    
     return feixo;
-}
-
-vector<int> obterTangenteInferior(vector<Ponto> esquerdo, vector<Ponto> direito){
-
-    //Lógica: 
-    //pegar o índice do ponto mais a direita do lado esquerdo
-    left = 0;
-    for(int i = 0; i < esquerdo.size(); i++)
-        if(esquerdo[i].x > esquerdo[left].x)
-            left = i;
-    
-    //pegar o índice do ponto mais a esquerda do lado direito    
-    right = 0;
-    for(int i = 0; i < direito.size(); i++)
-        if(direito[i].x < direito[right].x)
-            right = i;
-
-    vector<int> tangente;
-
-    Triangulo trianguloE, trianguloD;
-    bool orientacao_esquerda, orientacao_direita;
-    int next_left, next_right;
-    
-    //Consegue o ponto counterclockwise antecessor ao esquerdo
-    //O modulo faz isso ser uma operação circular, ou seja
-    //Se fosse 0 => (0 + n - 1) % n = n-1, ultimo elemento
-    next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
-    next_right = (right + 1) % direito.size();             //Proximo  n+1
-
-    trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
-    trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
-
-    orientacao_esquerda = ccwTriangulo(trianguloE);
-    orientacao_direita  = ccwTriangulo(trianguloD);
-
-    //Enquanto o não (esquerdo ser clowise e direito ser counterclockwise)
-    while(!(!orientacao_esquerda && orientacao_direita)){
-
-        //Desce no polígono direito => adiciona
-        if(!orientacao_esquerda && !orientacao_direita){
-            right = (right + 1) % direito.size(); 
-        }
-        //Desce no polígono esquerdo => subtrai
-        else if(orientacao_esquerda && orientacao_direita){
-            left = (left - 1 + esquerdo.size()) % esquerdo.size();
-        }
-
-        next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
-        next_right = (right + 1) % direito.size();             //Proximo  n+1
-
-        trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
-        trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
-
-        orientacao_esquerda = ccwTriangulo(trianguloE);
-        orientacao_direita  = ccwTriangulo(trianguloD);
-    }
-    
-    tangente.push_back(left);
-    tangente.push_back(right);
-
-    //Tangente inferior => obtida, ligar esquerdo[left] com direito[right]
-    return tangente;
 }

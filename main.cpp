@@ -3,6 +3,7 @@
 #include "Source/primitivas.h"
 #include "Source/poligono.h"
 #include "Source/operacoes.h"
+#include "SDL2/SDL.h"
 
 using namespace std;
 

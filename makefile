@@ -2,7 +2,7 @@
 linkTarget = run
 
 # Definir as bibliotecas a serem utilizadas
-LIBS = 
+LIBS = -lSDL2
 
 # Definir as flags.
 # CFLAGS = -std=c++17 -pg
