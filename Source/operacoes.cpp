@@ -162,38 +162,10 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
 
     int left, int right;
 
-    //Lógica: 
-    //pegar o índice do ponto mais a direita do lado esquerdo
-    left = 0;
-    for(int i = 0; i < esquerdo.size(); i++)
-        if(esquerdo[i].x > esquerdo[left].x)
-            left = i;
-    
-    //pegar o índice do ponto mais a esquerda do lado direito    
-    right = 0;
-    for(int i = 0; i < direito.size(); i++)
-        if(direito[i].x < direito[right].x)
-            right = i;
-
     //A tangente inferior é obtida através desse algoritmo
-    vector<int> inferior = obterTangenteInferior(esquerdo,left,direito,right);
-
-
-    //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
-    //Perceba, se eu girar minha tela 180°, de modo que ela fique de cabeça para baixo,
-    //os polígonos permanescem os mesmos, mas suas posições se invertem,
-    //além disso, a tangente superior vira a inferior
-    //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
-    //Eu acho... testar depois
-    //Será que precisa inverter a ordem para manter os polígonos no sentido antiHorário? => provavelmente
-
-    reverse(esquerdo.begin(), esquerdo.end());
-    reverse(direito.begin() , direito.end());
+    vector<int> inferior = obterTangenteInferior(esquerdo,direito);
     
-    vector<int> superior = obterTangenteInferior(direito,direito.size() - right,esquerdo,esquerdo.size() - left);
-
-    reverse(esquerdo.begin(), esquerdo.end());
-    reverse(direito.begin() , direito.end());
+    vector<int> superior = obterTangenteSuperior(esquerdo, direito);
 
     superior[0] = direito.size()  - superior[0];
     superior[1] = esquerdo.size() - superior[1];
@@ -218,7 +190,20 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     return feixo;
 }
 
-vector<int> obterTangenteInferior(vector<Ponto> esquerdo, int left, vector<Ponto> direito, int right){
+vector<int> obterTangenteInferior(vector<Ponto> esquerdo, vector<Ponto> direito){
+
+    //Lógica: 
+    //pegar o índice do ponto mais a direita do lado esquerdo
+    left = 0;
+    for(int i = 0; i < esquerdo.size(); i++)
+        if(esquerdo[i].x > esquerdo[left].x)
+            left = i;
+    
+    //pegar o índice do ponto mais a esquerda do lado direito    
+    right = 0;
+    for(int i = 0; i < direito.size(); i++)
+        if(direito[i].x < direito[right].x)
+            right = i;
 
     vector<int> tangente;
 
