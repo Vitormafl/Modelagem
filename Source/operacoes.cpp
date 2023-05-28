@@ -176,7 +176,7 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
             right = i;
 
     //A tangente inferior é obtida através desse algoritmo
-    vector<Ponto> inferior = obterTangente(esquerdo,left,direito,right);
+    vector<int> inferior = obterTangenteInferior(esquerdo,left,direito,right);
 
 
     //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
@@ -186,20 +186,39 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
     //Eu acho... testar depois
     //Será que precisa inverter a ordem para manter os polígonos no sentido antiHorário? => provavelmente
-    vector<Ponto> superior = obterTangente(direito,right,esquerdo,left);
+
+    reverse(esquerdo.begin(), esquerdo.end());
+    reverse(direito.begin() , direito.end());
+    
+    vector<int> superior = obterTangenteInferior(direito,direito.size() - right,esquerdo,esquerdo.size() - left);
+
+    reverse(esquerdo.begin(), esquerdo.end());
+    reverse(direito.begin() , direito.end());
+
+    superior[0] = direito.size()  - superior[0];
+    superior[1] = esquerdo.size() - superior[1];
 
     //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
     //fazer tal algoritmo...
-    //p1 = inferior[0]; p2 = inferior[1]; p3 = superior[0]; p4 = superior[1]
-    //adiciona p1
-    //adiciona todos os pontos entre p2 e p3
-    //adiciona p3
-    //adiciona todos os pontos entre p4 e p1
+
+    //Adiciona a parte do polígono direito
+    //Pega o ponto do polígono direito da tangente inferior
+    //Vai até o começo da tangente superior adicionando todos pontos entre eles
+    for(int i = inferior[1]; i != superior[0]; i = (i + 1) % direito.size()){
+        feixo.push_back(direito[i]);
+    }
+    feixo.push_back(direito[superior[0]]);
+
+    //Adiciona a parte do polígono esquerdo
+    for(int i = superior[1]; i != inferior[0]; i = (i + 1) % esquerdo.size()){
+        feixo.push_back(esquerdo[i]);
+    }
+    feixo.push_back(direito[inferior[0]]);
 
     return feixo;
 }
 
-vector<int> obterTangente(vector<Ponto> esquerdo, int left, vector<Ponto> direito, int right){
+vector<int> obterTangenteInferior(vector<Ponto> esquerdo, int left, vector<Ponto> direito, int right){
 
     vector<int> tangente;
 
