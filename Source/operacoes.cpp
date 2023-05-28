@@ -155,3 +155,62 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     
     return feixo;
 };
+
+vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
+
+    Triangulo trianguloE, trianguloD;
+    bool orientacao_esquerda, orientacao_direita;
+    int left,right;
+    int next_left, next_right;
+
+
+    //Lógica: 
+    //pegar o índice do ponto mais a esquerda do lado esquerdo
+    left = 0;
+    for(int i = 0; i < esquerdo.size(); i++)
+        if(esquerdo[i].x > esquerdo[left].x)
+            left = i;
+    
+    //pegar o índice do ponto mais a direita do lado direito    
+    right = 0;
+    for(int i = 0; i < direito.size(); i++)
+        if(direito[i].x > direito[right].x)
+            right = i;
+    
+    //Consegue o ponto counterclockwise antecessor ao esquerdo
+    //O modulo faz isso ser uma operação circular, ou seja
+    //Se fosse 0 => (0 + n - 1) % n = n-1, ultimo elemento
+    next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
+    next_right = (right + 1) % direito.size();             //Proximo  n+1
+
+    trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
+    trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
+
+    orientacao_esquerda = ccwTriangulo(trianguloE);
+    orientacao_direita  = ccwTriangulo(trianguloD);
+
+    //Enquanto o não (esquerdo ser clowise e direito ser counterclockwise)
+    while(!(!orientacao_esquerda && orientacao_direita)){
+
+        //Desce no polígono direito => adiciona
+        if(!orientacao_esquerda && !orientacao_direita){
+            right = (right + 1) % direito.size(); 
+        }
+        //Desce no polígono esquerdo => subtrai
+        else if(orientacao_esquerda && orientacao_direita){
+            left = (left - 1 + esquerdo.size()) % esquerdo.size();
+        }
+
+        next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
+        next_right = (right + 1) % direito.size();             //Proximo  n+1
+
+        trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
+        trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
+
+        orientacao_esquerda = ccwTriangulo(trianguloE);
+        orientacao_direita  = ccwTriangulo(trianguloD);
+    }
+
+    //Tangente inferior => obtida, ligar esquerdo[left] com direito[right]
+
+}
