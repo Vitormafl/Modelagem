@@ -51,6 +51,13 @@ int teste1(){
     p.inserirPonto(p3);
     p.inserirPonto(p4);
     p.inserirPonto(p5);
+    p.inserirPonto(p6);
+    p.inserirPonto(p7);
+    p.inserirPonto(p8);
+    p.inserirPonto(p9);
+    p.inserirPonto(p10);
+    p.inserirPonto(p11);
+
 
     //cout << "vetor de pontos inicial: "<< endl;
 //

@@ -81,16 +81,21 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
 
 };
 
-Poligono Graham(Poligono P){
-    vector<Ponto> feixo_convexo, pontos_candidatos;
-    Poligono feixo = Poligono();
+vector<Ponto> feixoConvexo(Poligono P){
+    P.orderPoligono();
+
+    vector<Ponto> feixo, pontos = P.vetor_de_pontos;
+    feixo = mergeHull(pontos);
+
+    return feixo;
+};
+
+vector<Ponto> Graham(vector<Ponto> pontos_candidatos){
+    vector<Ponto> feixo_convexo;
     Vetor a,b;
     int i = 1;
 
-    P.orderPoligono();
-
-    feixo_convexo.push_back(P.vetor_de_pontos[0]);
-    pontos_candidatos = P.vetor_de_pontos;
+    feixo_convexo.push_back(pontos_candidatos[0]);
 
     while (i < pontos_candidatos.size()){
 
@@ -112,9 +117,41 @@ Poligono Graham(Poligono P){
         }
     }
 
-    for (int i = 0; i < feixo_convexo.size(); i++){
-        feixo.inserirPonto(feixo_convexo[i]);
+    return feixo_convexo;    
+};
+
+vector<Ponto> merge(vector<Ponto> feixo_esquerdo, vector<Ponto> feixo_direito){
+
+    int e = feixo_esquerdo.size();
+    int d = feixo_direito.size();
+    int i = 0, j = 0;
+
+
+};
+
+vector<Ponto> mergeHull(vector<Ponto> pontos){
+
+    vector<Ponto> feixo, esquerdo, direito, feixo_esquerdo, feixo_direito;
+    int n = pontos.size();
+
+    if (n < 6){
+        feixo = Graham(pontos);
+        return feixo;
     }
 
-    return feixo;    
+    int mid = n / 2;
+
+    for (int i = 0; i < mid; i++) {
+        esquerdo.push_back(pontos[i]);
+    }
+    for (int i = mid; i < n; i++) {
+        direito.push_back(pontos[i]);
+    }
+
+    feixo_esquerdo = mergeHull(esquerdo);
+    feixo_direito = mergeHull(direito);
+
+    feixo = merge(feixo_esquerdo, feixo_direito);
+    
+    return feixo;
 };

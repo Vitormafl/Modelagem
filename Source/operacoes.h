@@ -7,6 +7,11 @@ bool pontoEmTriangulo(Triangulo t, Ponto p);
 bool pontoEmPoligonoTiro(Poligono p, Ponto p1);
 bool pontoEmPoligonoRotação(Poligono p, Ponto p1);
 
-Poligono Graham(Poligono P);
+vector<Ponto> merge( vector<Ponto> feixo_esquerdo, vector<Ponto> feixo_direito);
+
+vector<Ponto> Graham(vector<Ponto> pontos);
+vector<Ponto> mergeHull(vector<Ponto>);
+
+vector<Ponto> feixoConvexo(Poligono P);
 
 #endif
