@@ -163,16 +163,16 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     int left, int right;
 
     //Lógica: 
-    //pegar o índice do ponto mais a esquerda do lado esquerdo
+    //pegar o índice do ponto mais a direita do lado esquerdo
     left = 0;
     for(int i = 0; i < esquerdo.size(); i++)
         if(esquerdo[i].x > esquerdo[left].x)
             left = i;
     
-    //pegar o índice do ponto mais a direita do lado direito    
+    //pegar o índice do ponto mais a esquerda do lado direito    
     right = 0;
     for(int i = 0; i < direito.size(); i++)
-        if(direito[i].x > direito[right].x)
+        if(direito[i].x < direito[right].x)
             right = i;
 
     //A tangente inferior é obtida através desse algoritmo
