@@ -158,6 +158,28 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
 
 vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
 
+    vector<Ponto> feixo;
+
+    //A tangente inferior é obtida através desse algoritmo
+    vector<Ponto> inferior = obterTangente(esquerdo,direito);
+    //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
+    //Perceba, se eu girar minha tela 180°, de modo que ela fique de cabeça para baixo,
+    //os polígonos permanescem os mesmos, mas suas posições se invertem,
+    //além disso, a tangente superior vira a inferior
+    //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
+    //Eu acho... testar depois
+    vector<Ponto> superior = obterTangente(direito, esquerdo);
+
+    //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
+    //fazer tal algoritmo...
+
+    return feixo;
+}
+
+vector<int> obterTangente(vector<Ponto> esquerdo, vector<Ponto> direito){
+
+    vector<int> tangente;
+
     Triangulo trianguloE, trianguloD;
     bool orientacao_esquerda, orientacao_direita;
     int left,right;
@@ -210,7 +232,10 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
         orientacao_esquerda = ccwTriangulo(trianguloE);
         orientacao_direita  = ccwTriangulo(trianguloD);
     }
+    
+    tangente.push_back(left);
+    tangente.push_back(right);
 
     //Tangente inferior => obtida, ligar esquerdo[left] com direito[right]
-
+    return tangente;
 }
