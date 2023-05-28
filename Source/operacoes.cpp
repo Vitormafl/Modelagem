@@ -155,3 +155,110 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     
     return feixo;
 };
+
+vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
+
+    vector<Ponto> feixo;
+
+    int left, int right;
+
+    //Lógica: 
+    //pegar o índice do ponto mais a esquerda do lado esquerdo
+    left = 0;
+    for(int i = 0; i < esquerdo.size(); i++)
+        if(esquerdo[i].x > esquerdo[left].x)
+            left = i;
+    
+    //pegar o índice do ponto mais a direita do lado direito    
+    right = 0;
+    for(int i = 0; i < direito.size(); i++)
+        if(direito[i].x > direito[right].x)
+            right = i;
+
+    //A tangente inferior é obtida através desse algoritmo
+    vector<int> inferior = obterTangente(esquerdo,left,direito,right);
+
+
+    //A tangente superior pode ser obtida do mesmo jeito, invertendo a ordem.
+    //Perceba, se eu girar minha tela 180°, de modo que ela fique de cabeça para baixo,
+    //os polígonos permanescem os mesmos, mas suas posições se invertem,
+    //além disso, a tangente superior vira a inferior
+    //Logo, achar a tangente inferior dessa ordem invertida equivale a achar a tangente superior
+    //Eu acho... testar depois
+    //Será que precisa inverter a ordem para manter os polígonos no sentido antiHorário? => provavelmente
+    vector<int> superior = obterTangente(direito,right,esquerdo,left);
+
+    //Pegar esses quatro pontos e ligar os feixos esquerdos com o direito
+    //fazer tal algoritmo...
+
+    //Adiciona a parte do polígono direito
+    //Pega o ponto do polígono direito da tangente inferior
+    //Vai até o começo da tangente superior adicionando todos pontos entre eles
+    int curr = inferior[1];
+    while (curr != superior[0]) {
+        feixo.push_back(direito[curr]);
+        curr = (curr + 1) % direito.size();
+    }
+
+    feixo.push_back(direito[superior[0]]);
+
+    //Adicionada a parte do polígono esquerdo
+    curr = superior[1];
+    while (curr != inferior[0]) {
+        feixo.push_back(esquerdo[curr]);
+        curr = (curr + 1) % esquerdo.size();
+    }
+
+    feixo.push_back(direito[inferior[0]]);
+
+    return feixo;
+}
+
+vector<int> obterTangente(vector<Ponto> esquerdo, int left, vector<Ponto> direito, int right){
+
+    vector<int> tangente;
+
+    Triangulo trianguloE, trianguloD;
+    bool orientacao_esquerda, orientacao_direita;
+    int next_left, next_right;
+    
+    //Consegue o ponto counterclockwise antecessor ao esquerdo
+    //O modulo faz isso ser uma operação circular, ou seja
+    //Se fosse 0 => (0 + n - 1) % n = n-1, ultimo elemento
+    next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
+    next_right = (right + 1) % direito.size();             //Proximo  n+1
+
+    trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
+    trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
+
+    orientacao_esquerda = ccwTriangulo(trianguloE);
+    orientacao_direita  = ccwTriangulo(trianguloD);
+
+    //Enquanto o não (esquerdo ser clowise e direito ser counterclockwise)
+    while(!(!orientacao_esquerda && orientacao_direita)){
+
+        //Desce no polígono direito => adiciona
+        if(!orientacao_esquerda && !orientacao_direita){
+            right = (right + 1) % direito.size(); 
+        }
+        //Desce no polígono esquerdo => subtrai
+        else if(orientacao_esquerda && orientacao_direita){
+            left = (left - 1 + esquerdo.size()) % esquerdo.size();
+        }
+
+        next_left =  (left+esquerdo.size()-1)%esquerdo.size(); //Anterior n-1
+        next_right = (right + 1) % direito.size();             //Proximo  n+1
+
+        trianguloE = Triangulo(esquerdo[left], esquerdo[next_left], direito[right]);
+        trianguloD = Triangulo(direito[right], direito[next_right], esquerdo[left]);
+
+        orientacao_esquerda = ccwTriangulo(trianguloE);
+        orientacao_direita  = ccwTriangulo(trianguloD);
+    }
+    
+    tangente.push_back(left);
+    tangente.push_back(right);
+
+    //Tangente inferior => obtida, ligar esquerdo[left] com direito[right]
+    return tangente;
+}
