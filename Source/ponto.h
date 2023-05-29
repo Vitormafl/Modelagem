@@ -7,12 +7,12 @@ class Ponto
 {
     public: 
 
-        float x;
-        float y;
+        double x;
+        double y;
 
         Ponto();
 
-        Ponto(float x, float y);
+        Ponto(double x, double y);
 
 };
 

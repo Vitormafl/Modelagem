@@ -82,9 +82,10 @@ bool pontoEmPoligonoRotação(Poligono p, Ponto p1){
 };
 
 vector<Ponto> feixoConvexo(Poligono P){
-    P.orderPoligono();
 
     vector<Ponto> feixo, pontos = P.vetor_de_pontos;
+    quicksort(pontos, 0, pontos.size()-1);
+
     feixo = mergeHull(pontos);
 
     return feixo;
@@ -126,11 +127,15 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     int n = pontos.size();
 
     if (n < 6){
-        feixo = Graham(pontos);
+        Poligono p(pontos);
+        p.orderPoligono();
+        
+        feixo = Graham(p.vetor_de_pontos);
         return feixo;
     }
 
     int mid = n / 2;
+
 
     for (int i = 0; i < mid; i++) {
         esquerdo.push_back(pontos[i]);
@@ -138,6 +143,7 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     for (int i = mid; i < n; i++) {
         direito.push_back(pontos[i]);
     }
+
 
     feixo_esquerdo = mergeHull(esquerdo);
     feixo_direito = mergeHull(direito);
@@ -160,16 +166,20 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     int tie, tid, tse, tsd;
 
     for(int i = 1; i < esquerdo.size(); i++){
-        if(esquerdo[i].x > maiorx)
+        if(esquerdo[i].x > maiorx){
             maiorx = esquerdo[i].x;
             i_maiorx = i;
+        }
     }
 
     for(int i = 1; i < direito.size(); i++){
-        if(direito[i].x < menorx)
+        if(direito[i].x < menorx){
             menorx = direito[i].x;
             i_menorx = i;
+        }
     }
+
+    //cout << i_maiorx << " " << i_menorx << endl;
 
     tie = i_maiorx;
     tse = i_maiorx;
@@ -177,6 +187,7 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     tsd = i_menorx; 
 
     while (flag_inf != 1){
+
         t1 = Triangulo(esquerdo[tie],esquerdo[(tie - 1 + esquerdo.size())%esquerdo.size()], direito[tid]);
         t2 = Triangulo(direito[tid],direito[(tid + 1)%direito.size()], esquerdo[tie]);
         ot1 = ccwTriangulo(t1);
@@ -187,13 +198,21 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
         }
         else if (ot1 && ot2){
             tie = (tie - 1 + esquerdo.size())%esquerdo.size();
-        } 
+
+        }  
         else if (!ot1 && ot2){
             flag_inf = 1;
+
         }
+        else{
+            tid = (tid + 1)%direito.size();
+            tie = (tie - 1 + esquerdo.size())%esquerdo.size();
+        }
+
     }
 
-    while (flag_inf != 2){
+    while (flag_sup != 1){
+
         t1 = Triangulo(esquerdo[tse],esquerdo[(tse + 1)%esquerdo.size()], direito[tsd]);
         t2 = Triangulo(direito[tsd],direito[(tsd - 1 + direito.size())%direito.size()], esquerdo[tse]);
         ot1 = ccwTriangulo(t1);
@@ -206,10 +225,15 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
             tsd = (tsd - 1 + direito.size())%direito.size();
         } 
         else if (ot1 && !ot2){
-            flag_inf = 2;
+            flag_sup = 1;
+        }
+        else{
+            tse = (tse + 1)%esquerdo.size();
+            tsd = (tsd - 1 + direito.size())%direito.size();
         }
         
     }
+
 
     for (int i = tid; i != tsd; i = (i+1)%direito.size()){
         feixo.push_back(direito[i]);

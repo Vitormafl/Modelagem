@@ -17,6 +17,7 @@ class Poligono
         
         Poligono();
         Poligono(Ponto p1);
+        Poligono(vector<Ponto> vp);
 
         void orderPoligono();
         void inserirPonto(Ponto p);

@@ -2,9 +2,10 @@
 
 Ponto::Ponto(){};
 
-Ponto::Ponto(float x, float y)
+Ponto::Ponto(double x, double y)
 {
     this->x = x;
     this->y = y;
 };
+
 

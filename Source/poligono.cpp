@@ -10,6 +10,15 @@ Poligono::Poligono(Ponto p1)
     this->vetor_de_pontos.push_back(p1);
 }; 
 
+Poligono::Poligono(vector<Ponto> vp)
+{   
+    this->qnt_pontos = 0;
+    
+    for(int p = 0; p < vp.size(); p++){
+        this->inserirPonto(vp[p]);
+    }
+};
+
 void Poligono::orderPoligono(){
     Ponto medio = Ponto(0,0);
     Ponto ponto_volta;
