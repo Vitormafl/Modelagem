@@ -2,7 +2,7 @@
 
 Ponto::Ponto(){};
 
-Ponto::Ponto(double x, double y)
+Ponto::Ponto(float x, float y)
 {
     this->x = x;
     this->y = y;

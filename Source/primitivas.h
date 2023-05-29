@@ -8,6 +8,8 @@
 #include "aresta.h"
 #include "triangulo.h"
 
+using namespace std;
+
 Vetor somaVetorial(Vetor a, Vetor b);
 Vetor multEscalar(float lambda, Vetor a);
 double prodEscalar(Vetor a, Vetor b);

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Source/aresta.h"
 #include "Source/primitivas.h"
 #include "Source/poligono.h"
@@ -30,52 +31,121 @@ bool pontosValidos(vector<Ponto> pontos, vector<Ponto> validos){
     return valido;
 }
 
+vector<vector<Ponto>> leOBJ(const string &nomearq) {
+
+  vector<vector<Ponto>> listaObjs;
+
+  ifstream file(nomearq);
+  string linha;
+
+  if (!file.is_open()) {
+    cout << "Erro ao abrir o arquivo " << nomearq << endl;
+    return listaObjs;
+  }
+
+  // int i = 0;
+  vector<Ponto> objatual;
+
+  while (file) {
+
+    getline(file, linha);
+
+    // novo objeto encontrado
+    if (linha.substr(0, 2) == "o ") {
+
+      // se o atual eh maior que 0... salvar!
+      if (objatual.size() > 0) {
+        listaObjs.push_back(objatual);
+        objatual.clear(); // limpo para a proxima iteracao
+      }
+    }
+
+    if (linha.substr(0, 2) == "v ") {
+
+      Ponto p;
+      double aux;
+
+      sscanf(linha.c_str(), "v %f %f %f", &p.x, &aux, &p.y);
+
+      objatual.push_back(p);
+    }
+  }
+
+  // se nao ta vazio
+  if (objatual.size() > 0) {
+    listaObjs.push_back(objatual);
+  }
+
+  return listaObjs;
+}
+
+vector<Ponto> lePLY(const string &nomearq) {
+
+  vector<Ponto> listaPontos;
+
+  ifstream file(nomearq);
+  string linha;
+  int quantVerts = 0;
+
+  if (!file.is_open()) {
+    cout << "Erro ao abrir o arquivo " << nomearq << endl;
+    return listaPontos;
+  }
+
+  while (getline(file, linha)) {
+    if (linha.find("element vertex") != std::string::npos) {
+      sscanf(linha.c_str(), "element vertex %d", &quantVerts);
+    } else if (linha.find("end_header") != std::string::npos) {
+      break;
+    }
+  }
+
+  for (int i = 0; i < quantVerts; ++i) {
+    getline(file, linha);
+    Ponto ponto;
+    double aux; // apenas para pegar o zero
+    sscanf(linha.c_str(), "%f %f %f", &(ponto.x), &aux, &(ponto.y));
+    listaPontos.push_back(ponto);
+  }
+
+  return listaPontos;
+}
+
+void escreverPontosEmArquivo(const std::vector<vector<Ponto>>& lista, const std::string& nomeArquivo) {
+  std::ofstream arquivo(nomeArquivo);
+  
+  if (arquivo.is_open()) {
+    for(vector<Ponto> pontos : lista){
+      arquivo << "Novo Feixo" << std::endl;
+      for (const auto& ponto : pontos) {
+          arquivo << ponto.x << " " << ponto.y << std::endl;
+      }
+    }
+      arquivo.close();
+      std::cout << "Pontos gravados no arquivo " << nomeArquivo << std::endl;
+  } else {
+      std::cerr << "Não foi possível abrir o arquivo " << nomeArquivo << " para escrita" << std::endl;
+  }
+}
+
 
 int main() {
+vector<vector<Ponto>> listalistaPontos = leOBJ("partesconvexas.obj");
 
-    vector<Ponto> vp, feixo;
-    Ponto p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15;
+  vector<vector<Ponto>> organizar2;
 
-    p1 = Ponto(8,-6);
-    p2 = Ponto(15,10);
-    p3 = Ponto(3,20);
-    p4 = Ponto(-8,20);
-    p5 = Ponto(-21,4);
-    p6 = Ponto(-9,-6);
-    p7 = Ponto(2, 2);
-    p8 = Ponto(-2,2);
-    p9 = Ponto(-16,-1);
-    p10 = Ponto(-4,11);
-    p11 = Ponto(1,12);
-    p12 = Ponto(7,7);
-    p13 = Ponto(0, 0);
-    p14 = Ponto(5,-1);
-    p15 = Ponto(-7,-1);
+  for(vector<Ponto> pontos : listalistaPontos){
 
-    vp.push_back(p1);
-    vp.push_back(p2);
-    vp.push_back(p3);
-    vp.push_back(p4);
-    vp.push_back(p5);
-    vp.push_back(p6);
-    vp.push_back(p7);
-    vp.push_back(p8);
-    vp.push_back(p9);
-    vp.push_back(p10);
-    vp.push_back(p11);
-    vp.push_back(p12);
-    vp.push_back(p13);
-    vp.push_back(p14);
-    vp.push_back(p15);
+    Poligono p = Poligono(pontos);
 
-    Poligono p = Poligono(vp);
     p.orderPoligono();
+    
+    organizar2.push_back(feixoConvexo(p));
 
-    feixo = feixoConvexo(p);
+  }
 
-    for(int i = 0; i < feixo.size(); i++){
-        cout <<"Ponto " << i+1 << ": " << feixo[i].x << " " << feixo[i].y << endl;
-    };
+  escreverPontosEmArquivo(organizar2, "merge.txt");
+  
 
-    return 0;
+  return 0;
 }
