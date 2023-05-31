@@ -126,12 +126,21 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     vector<Ponto> feixo, esquerdo, direito, feixo_esquerdo, feixo_direito;
     int n = pontos.size();
 
+    //testes
+    vector<Ponto> feixo_teste;
+    Poligono p_teste;
+
     if (n < 6){
         Poligono p(pontos);
         p.orderPoligono();
         
         feixo = Graham(p.vetor_de_pontos);
         return feixo;
+    }
+
+    for (int i = 1; i < pontos.size(); i++){
+        if (pontos[i].x < pontos[i-1].x)
+            cout << "erro de ordenação no eixo x" << endl;
     }
 
     int mid = n / 2;
@@ -148,7 +157,23 @@ vector<Ponto> mergeHull(vector<Ponto> pontos){
     feixo_esquerdo = mergeHull(esquerdo);
     feixo_direito = mergeHull(direito);
 
+    //testes
+    for(int i = 0; i < esquerdo.size(); i++){
+        feixo_teste.push_back(esquerdo[i]);
+    }
+    for(int i = 0; i < direito.size(); i++){
+        feixo_teste.push_back(direito[i]);
+    }
+    p_teste = Poligono(feixo_teste);
+    p_teste.orderPoligono();
+    feixo_teste = Graham(p_teste.vetor_de_pontos);
+    
     feixo = merge(feixo_esquerdo, feixo_direito);
+
+    //testes
+    if(feixo.size() != feixo_teste.size()){
+        cout << "erro na criação do feixo pós merge" << endl;
+    }
     
     return feixo;
 };
@@ -162,7 +187,8 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
 
     int flag_inf = 0, flag_sup = 0;
 
-    int maiorx = esquerdo[0].x, menorx = direito[0].x, i_maiorx = 0, i_menorx = 0;
+    double maiorx = esquerdo[0].x, menorx = direito[0].x; 
+    int i_maiorx = 0, i_menorx = 0;
     int tie, tid, tse, tsd;
 
     for(int i = 1; i < esquerdo.size(); i++){
@@ -198,11 +224,9 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
         }
         else if (ot1 && ot2){
             tie = (tie - 1 + esquerdo.size())%esquerdo.size();
-
         }  
         else if (!ot1 && ot2){
             flag_inf = 1;
-
         }
         else{
             tid = (tid + 1)%direito.size();
