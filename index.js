@@ -74,37 +74,38 @@ class Animador{
     constructor(historico, canvasContext){
         this.historico = historico;
         this.contexto = canvasContext;
-        this.turno = 0;
+        this.frames = this.getFrames();
         this.previousTimestamp = 0;
+        this.feixos = {};
+        this.pilha = [];
     }
 
     rodarTurno(indice){
         
         const turno = this.historico.turnos[indice];
 
-        this.maiorFeixoEsquerdo = (this.maiorFeixoEsquerdo)? 
-                                  (this.maiorFeixoEsquerdo.length > turno.esquerdo.length)? 
-                                  this.maiorFeixoEsquerdo :
-                                  turno.esquerdo :
-                                  turno.esquerdo;
+        // console.log(this.pilha)
+      
+        const getlength = (pilha) => (pilha.maiorEsquerdo)? pilha.maiorEsquerdo.length + pilha.maiorDireito.length : 0;
 
-        this.maiorFeixoDireito = (this.maiorFeixoDireito)? 
-                                  (this.maiorFeixoDireito.length > turno.direito.length)? 
-                                  this.maiorFeixoDireito :
-                                  turno.direito :
-                                  turno.direito;
+        if(getlength(this.pilha) < turno.esquerdo.length + turno.direito.length){
+          this.pilha.maiorEsquerdo = turno.esquerdo;
+          this.pilha.maiorDireito  =  turno.direito;
+        }
+        
+        const maiorEsquerdo = this.pilha.maiorEsquerdo;
+        const maiorDireito = this.pilha.maiorDireito;
 
-        this.desenharFeixo(this.maiorFeixoEsquerdo, 'red');
-        this.desenharFeixo(this.maiorFeixoDireito, 'red');
-
-        this.desenharFeixo(turno.esquerdo);
+        this.pilha = [turno.esquerdo, turno.direito, this.pilha.maiorEsquerdo, this.pilha.maiorDireito];
+        this.pilha.maiorDireito = maiorDireito;
+        this.pilha.maiorEsquerdo = maiorEsquerdo;
     }
 
     desenharFeixo(feixo, cor = 'blue'){
 
         const ctx = this.contexto;
 
-        const corrigido = feixo.map(ponto => ({x:ponto.x*100, y:ponto.y*100+400}));
+        const corrigido = feixo.map(ponto => ({y:ponto.x*100, x:ponto.y*100+400}));
 
         corrigido.forEach((a,i) => {
 
@@ -124,38 +125,26 @@ class Animador{
     desenharVertices(){
 
         const ctx = this.contexto;
+
+        const highlighted = (ponto) => this.pilha.reduce((a,b) => a.concat(b),[]).filter(p => p && p.x == ponto.x && p.y == ponto.y).length > 0;
+
         // Array of circle objects
-        const circles = this.historico.pontos.map(ponto => ({x: ponto.x*100, y: ponto.y*100+400, radius:3}))
+        const circles = this.historico.pontos.map(ponto => ({y: ponto.x*100, x: ponto.y*100+400, radius:3, inside: highlighted(ponto)}));
         
         // Draw circles on the canvas
         circles.forEach(function(circle) {
             ctx.beginPath();
             ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-            ctx.fillStyle = 'purple';
+            ctx.fillStyle = (circle.inside)? 'red':'purple';
             ctx.fill();
             ctx.closePath();
         });
     }
 
-    animate(timestamp) {
-
-        const elapsedTime      = timestamp - this.previousTimestamp;
-        this.previousTimestamp = timestamp;
-
-        this.contexto.clearRect(0, 0, 800, 800);
-        this.desenharVertices();
-        try{
-            this.rodarTurno(Math.round(this.turno));
-        }
-        catch(erro){
-            console.log(erro);
-        }
-
-        this.turno += elapsedTime/100;
-
-        this.turno = Math.min(this.turno, this.historico.turnos.length-1)
-        
-        requestAnimationFrame(this.animate.bind(this));
+    *getFrames(){
+      for(let turno = 0; turno < this.historico.turnos.length; turno++){
+        yield this.rodarTurno(turno);
+      }
     }
 }
 
@@ -167,38 +156,80 @@ class Animador{
 var input = document.createElement('input');
 input.type = 'file';
 
+input.multiple = true;
+let previousTimestamp = 0;
+let tempo = 0;
+const animadores = [];
+
+
 // Listen for changes in the input element
 input.addEventListener('change', function(e) {
-  var file = e.target.files[0]; // Get the selected file
+
+  // Create a canvas element
+  var canvas = document.createElement('canvas');
+  canvas.width = 800;
+  canvas.height = 800;
   
-  var reader = new FileReader(); // Create a new FileReader instance
+  // Add the canvas to the document
+  document.body.appendChild(canvas);
   
-  // Define a function to be executed when the file is successfully loaded
-  reader.onload = function(e) {
-    var contents = e.target.result; // Get the file contents
-    
-    const historico = new Historico(contents);
+  // Get the 2D context of the canvas
+  var ctx = canvas.getContext('2d');
 
-    // Create a canvas element
-    var canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 800;
-    
-    // Add the canvas to the document
-    document.body.appendChild(canvas);
-    
-    // Get the 2D context of the canvas
-    var ctx = canvas.getContext('2d');
+  console.log(e.target.files);
 
-    const animador = new Animador(historico, ctx);
+  const files  = e.target.files;
 
-    animador.desenharVertices();
 
-    // animador.rodarTurno(historico.turnos.length-1);
-    animador.animate(0);
-  };
+  for(const file of files){
   
-  reader.readAsText(file); // Read the file as text
+    var reader = new FileReader(); // Create a new FileReader instance
+    
+    // Define a function to be executed when the file is successfully loaded
+    reader.onload = function(e) {
+      var contents = e.target.result; // Get the file contents
+
+      const historico = new Historico(contents);
+
+      console.log(historico);
+
+      animadores.push(new Animador(historico, ctx));
+
+      animadores.map(animador => animador.desenharVertices());
+
+    };
+    
+    reader.readAsText(file); // Read the file as text
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () =>document.body.append(input))
+
+function animate(timestamp = 0) {
+
+  tempo += timestamp - previousTimestamp;
+
+  previousTimestamp = timestamp;
+
+  if(tempo > 100){
+
+      try{
+          if(animadores && animadores[0]){
+            animadores[0].contexto.clearRect(0, 0, 800, 800);
+          }
+          animadores.forEach(animador =>{
+            animador.frames.next();
+            animador.desenharVertices();
+            animador.pilha.forEach(feixo => animador.desenharFeixo(feixo));
+          })
+      }
+      catch(erro){
+          console.log(erro);
+      }
+      tempo = 0;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
