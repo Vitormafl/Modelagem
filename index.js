@@ -69,11 +69,11 @@ class Historico{
 
     const concatenar = (soma, esquerdoDireito) => soma.concat(esquerdoDireito);
 
-    //todos os turnos cujo feixo esquerdo contém esse feixo apontarão para esse feixo
-    const mapearFeixoLeft  = (feixo,turnos) => turnos.filter(turno => turno.esquerdo.map(pontos => pontos.length == feixo.length && pontos.map(ponto => ponto in feixo)))
-                                                     .map(turno => ({...turno, esquerdo: feixo}));
-    const mapearFeixoRight = (feixo,turnos) => turnos.filter(turno => turno.direito.map(pontos => pontos.length == feixo.length && pontos.map(ponto => ponto in feixo)))
-                                                     .map(turno => ({...turno, direito: feixo}));
+    //Retorna se o feixo está sendo repetido
+    const repetido = (feixo, feixoRepetido) => feixoRepetido.map(pontos => pontos.length == feixo.length && pontos.map(ponto => ponto in feixo)).reduce((a,b) => a && b, false);
+
+    const mapearFeixoLeft  = (feixo,turnos) => turnos.map(turno => repetido(feixo,turno.esquerdo)? ({...turno, esquerdo:feixo}) : turno.esquerdo);
+    const mapearFeixoRight = (feixo,turnos) => turnos.map(turno => repetido(feixo,turno.direito)?  ({...turno,  direito:feixo}) : turno.direito);
 
     const mapearFeixo      = feixo => mapearFeixoRight(feixo,mapearFeixoLeft(feixo,this.turnos));
 
