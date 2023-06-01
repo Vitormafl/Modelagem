@@ -64,7 +64,7 @@ class Historico{
                                             inferior:mapearPonto(turno.inferior),
                                             superior:mapearPonto(turno.superior)
     }));
-
+    /*
     const desfatorar = turno => [turno.esquerdo, turno.direito];
 
     const concatenar = (soma, esquerdoDireito) => soma.concat(esquerdoDireito);
@@ -105,6 +105,7 @@ class Historico{
     }
 
     console.log(this.feixos);
+    */
 
     return this;
   }
