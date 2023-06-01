@@ -49,7 +49,7 @@ class Historico{
 
   mapear(){
 
-    const mapearPonto = tipo => tipo.map(ponto => {
+    const mapearPonto = feixo => feixo.map(ponto => {
         try{
             return this.dicionario[ponto.x][ponto.y]
         }
@@ -64,6 +64,47 @@ class Historico{
                                             inferior:mapearPonto(turno.inferior),
                                             superior:mapearPonto(turno.superior)
     }));
+
+    const desfatorar = turno => [turno.esquerdo, turno.direito];
+
+    const concatenar = (soma, esquerdoDireito) => soma.concat(esquerdoDireito);
+
+    //todos os turnos cujo feixo esquerdo contém esse feixo apontarão para esse feixo
+    const mapearFeixoLeft  = (feixo,turnos) => turnos.filter(turno => turno.esquerdo.map(pontos => pontos.length == feixo.length && pontos.map(ponto => ponto in feixo)))
+                                                     .map(turno => ({...turno, esquerdo: feixo}));
+    const mapearFeixoRight = (feixo,turnos) => turnos.filter(turno => turno.direito.map(pontos => pontos.length == feixo.length && pontos.map(ponto => ponto in feixo)))
+                                                     .map(turno => ({...turno, direito: feixo}));
+
+    const mapearFeixo      = feixo => mapearFeixoRight(feixo,mapearFeixoLeft(feixo,this.turnos));
+
+    this.feixos = [];
+
+    for(let i = 0; i < this.turnos.length; i++){
+
+      let feixo;
+
+      feixo = this.turnos[i].esquerdo;
+
+      if(!(feixo in this.feixos)){
+        this.turnos = mapearFeixo(feixo);
+        this.feixos.push(feixo);
+      }
+
+      feixo = this.turnos[i].direito;
+
+      if(!(feixo in this.feixos)){
+        this.turnos = mapearFeixo(feixo);
+        this.feixos.push(feixo);
+      }
+    }
+
+    let a = 0;
+
+    for(const feixo of this.feixos){
+      feixo.indice = a++;
+    }
+
+    console.log(this.feixos);
 
     return this;
   }
@@ -203,7 +244,7 @@ input.addEventListener('change', function(e) {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () =>document.body.append(input))
+document.addEventListener('DOMContentLoaded', () =>document.getElementById("centro").append(input))
 
 function animate(timestamp = 0) {
 
