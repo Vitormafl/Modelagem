@@ -211,7 +211,7 @@ function animate(timestamp = 0) {
 
   previousTimestamp = timestamp;
 
-  if(tempo > 100){
+  if(tempo > 50){
 
       try{
           if(animadores && animadores[0]){
