@@ -128,9 +128,8 @@ void escreverPontosEmArquivo(const std::vector<vector<Ponto>>& lista, const std:
   }
 }
 
-
-int main() {
-vector<vector<Ponto>> listalistaPontos = leOBJ("partesconvexas.obj");
+void run_merge(){
+  vector<vector<Ponto>> listalistaPontos = leOBJ("Objects/partesconvexas.obj");
 
   vector<vector<Ponto>> organizar2;
 
@@ -144,8 +143,19 @@ vector<vector<Ponto>> listalistaPontos = leOBJ("partesconvexas.obj");
 
   }
 
-  escreverPontosEmArquivo(organizar2, "merge.txt");
-  
+  escreverPontosEmArquivo(organizar2, "Results/merge.txt");
+}
 
+int main() {
+
+  Ponto p1 = Ponto(-1.0, 0.0);
+  Ponto p2 = Ponto(1.0, 0.0);
+  Ponto p3 = Ponto(0.0, 1.0);
+  Ponto p4 = Ponto(0.0, 0.33333);
+
+  Triangulo t = Triangulo(p1,p2,p3);
+
+  cout << pontoEmTriangulo(t, p4) << endl;
+  
   return 0;
 }

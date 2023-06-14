@@ -12,6 +12,15 @@ bool pontoEmTriangulo(Triangulo t, Ponto p){
     if (lambda1 < 0  || lambda2 < 0  || lambda3 < 0 )
         return false;
 
+    if (t.p1.x == p.x && t.p1.y == p.y)
+        return false;
+        
+    if (t.p2.x == p.x && t.p2.y == p.y)
+        return false;
+        
+    if (t.p3.x == p.x && t.p3.y == p.y)
+        return false;
+        
     return true;
 };
 
