@@ -4,6 +4,7 @@
 #include "Source/primitivas.h"
 #include "Source/poligono.h"
 #include "Source/operacoes.h"
+#include "Triangulation/TACR.h"
 #include "SDL2/SDL.h"
 
 using namespace std;
@@ -148,14 +149,23 @@ void run_merge(){
 
 int main() {
 
-  Ponto p1 = Ponto(-1.0, 0.0);
-  Ponto p2 = Ponto(1.0, 0.0);
-  Ponto p3 = Ponto(0.0, 1.0);
-  Ponto p4 = Ponto(0.0, 0.33333);
+  Ponto p1 = Ponto(-2.0, 0.0);
+  Ponto p2 = Ponto(2.0, 0.0);
+  Ponto p3 = Ponto(0.0, 2.0);
+  Ponto p4 = Ponto(0.3,1.0);
+  Ponto p5 = Ponto(-1.8, 0.05);
+  Ponto p6 = Ponto(0.5, 0.5);
+  vector<Ponto> vp;
 
-  Triangulo t = Triangulo(p1,p2,p3);
+  vp.push_back(p4);
+  vp.push_back(p5);
+  vp.push_back(p6);
 
-  cout << pontoEmTriangulo(t, p4) << endl;
+  Triangulo t = Triangulo(p2,p1,p3);
+
+  int indice = closestPointDiagonal(t,vp);
+
+  cout << vp[indice].x << " " << vp[indice].y << endl;
   
   return 0;
 }
