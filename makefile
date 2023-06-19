@@ -12,6 +12,7 @@ CFLAGS = -std=c++17 -Ofast
 objects = main.o \
 				$(patsubst %.cpp,%.o,$(wildcard ./Source/*.cpp)) \
 				$(patsubst %.cpp,%.o,$(wildcard ./Triangulation/*.cpp)) \
+				$(patsubst %.cpp,%.o,$(wildcard ./Visualization/*.cpp)) \
 				$(patsubst %.cpp,%.o,$(wildcard ./Sorts/*.cpp))
 					
 # Define the rebuildables.

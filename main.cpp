@@ -5,7 +5,7 @@
 #include "Source/poligono.h"
 #include "Source/operacoes.h"
 #include "Triangulation/TACR.h"
-#include "SDL2/SDL.h"
+#include "Visualization/window.h"
 
 using namespace std;
 
@@ -147,25 +147,35 @@ void run_merge(){
   escreverPontosEmArquivo(organizar2, "Results/merge.txt");
 }
 
-int main() {
+int main(int argc, char* argv[]) {
 
-  Ponto p1 = Ponto(-2.0, 0.0);
-  Ponto p2 = Ponto(2.0, 0.0);
-  Ponto p3 = Ponto(0.0, 2.0);
-  Ponto p4 = Ponto(0.3,1.0);
-  Ponto p5 = Ponto(-1.8, 0.05);
-  Ponto p6 = Ponto(0.5, 0.5);
-  vector<Ponto> vp;
+  vector<vector<Ponto>> listalistaPontos = leOBJ("Objects/partesconvexas.obj");
 
-  vp.push_back(p4);
-  vp.push_back(p5);
-  vp.push_back(p6);
+  vector<vector<Ponto>> organizar2;
 
-  Triangulo t = Triangulo(p2,p1,p3);
+  vector<vector<Triangulo>> vvt;
 
-  int indice = closestPointDiagonal(t,vp);
+  vector<Triangulo> vt;
 
-  cout << vp[indice].x << " " << vp[indice].y << endl;
+  for(vector<Ponto> pontos : listalistaPontos){
+
+    Poligono p = Poligono(pontos);
+
+    p.orderPoligono();
+    
+    organizar2.push_back(feixoConvexo(p));
+
+  }
+
+  escreverPontosEmArquivo(organizar2, "Results/merge.txt");
+
+  for (int i = 0; i < organizar2.size(); i++){
+    vt = Diagonals(organizar2[i]);
+    vvt.push_back(vt);
+  }
   
-  return 0;
+    // Initialize SDL2
+  runWindow(organizar2, vvt);
+
+    return 0;
 }
