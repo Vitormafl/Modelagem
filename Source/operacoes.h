@@ -13,5 +13,6 @@ vector<Ponto> Graham(vector<Ponto> pontos);
 vector<Ponto> mergeHull(vector<Ponto>);
 
 vector<Ponto> feixoConvexo(Poligono P);
+vector<Ponto> improveHull(vector<Ponto> hull, int depth);
 
 #endif

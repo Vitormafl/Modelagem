@@ -157,13 +157,45 @@ int main(int argc, char* argv[]) {
 
   vector<Triangulo> vt;
 
+  // juntar os feixos
+  Ponto u24 = Ponto(listalistaPontos[2][0].x, listalistaPontos[2][17].y);
+  Ponto u01 = Ponto((1.50089 + 1.38887)/2, (0.349084-0.909608)/2);
+  Ponto u10 = Ponto(1.71252,2.29207);
+  Ponto u13 = Ponto(1.40607,1.79777);
+  Ponto u31 = Ponto(1.36515,1.30766);
+  Ponto u313 = Ponto((1.32422 + 1.24237)/2, (0.817538-0.162697)/2);
+  Ponto u73 = Ponto(0.915531,0.974361);
+  Ponto u37 = Ponto(0.890564,0.775897);
+  Ponto u53 = Ponto(1.14172,1.75864);
+  Ponto u35 = Ponto(1.04393,1.54923);
+  Ponto u63 = Ponto(0.979728,1.26179);
+  Ponto u36 = Ponto(0.915531,0.974361);
+  
+
+  listalistaPontos[0].push_back(listalistaPontos[2][20]);
+  listalistaPontos[0].push_back(listalistaPontos[2][21]);
+  listalistaPontos[1].push_back(u01);
+  listalistaPontos[1].push_back(u10);
+  listalistaPontos[2].push_back(u24);
+  listalistaPontos[3].push_back(u13);
+  listalistaPontos[3].push_back(u31);
+  listalistaPontos[3].push_back(u313);
+  listalistaPontos[4].push_back(u24);
+  listalistaPontos[4].push_back(listalistaPontos[2][14]);
+  listalistaPontos[5].push_back(u53);
+  listalistaPontos[5].push_back(u35);
+  listalistaPontos[6].push_back(u63);
+  listalistaPontos[6].push_back(u36);
+  listalistaPontos[7].push_back(u73);
+  listalistaPontos[7].push_back(u37);
+
   for(vector<Ponto> pontos : listalistaPontos){
 
     Poligono p = Poligono(pontos);
 
     p.orderPoligono();
     
-    organizar2.push_back(feixoConvexo(p));
+    organizar2.push_back(improveHull(feixoConvexo(p),1));
 
   }
 
@@ -173,7 +205,7 @@ int main(int argc, char* argv[]) {
     vt = Diagonals(organizar2[i]);
     vvt.push_back(vt);
   }
-  
+
     // Initialize SDL2
   runWindow(organizar2, vvt);
 

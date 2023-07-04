@@ -280,3 +280,43 @@ vector<Ponto> merge(vector<Ponto> esquerdo, vector<Ponto> direito){
     
     return feixo;
 }
+
+vector<Ponto> improveHull(vector<Ponto> hull, int depth){
+    vector<double> distances, empty_distances;
+    vector<int> indices, empty_indices;
+    vector<Ponto> pontos, new_hull, old_hull = hull, empty_pontos;
+    Vetor distance;
+    double media;
+    Ponto new_ponto;
+    int start = depth;
+
+    for (int i = 0; i < old_hull.size(); i++){
+        distance = Vetor(old_hull[i], old_hull[(i+1)%old_hull.size()]);
+        distances.push_back(norma(distance));
+        media += norma(distance);
+    }
+    
+    media = media/distances.size();
+
+    for (int i = 0; i < distances.size(); i++){
+        if (distances[i] > media){
+            new_ponto = Ponto((old_hull[(i+1)%old_hull.size()].x + old_hull[i].x)/2, (old_hull[(i+1)%old_hull.size()].y + old_hull[i].y)/2);
+            indices.push_back(i);
+            pontos.push_back(new_ponto);
+        }
+    } 
+
+    int k = 0;
+
+    for (int i = 0; i < old_hull.size(); i++){
+        new_hull.push_back(old_hull[i]);
+        if (i == indices[k]){
+            new_hull.push_back(pontos[k]);
+            k++;
+        }
+    }
+
+    
+
+    return new_hull;
+}

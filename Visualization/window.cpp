@@ -8,7 +8,7 @@ int runWindow(vector<vector<Ponto>> vvp, vector<vector<Triangulo>> vt){
     }
 
     // Create a window
-    SDL_Window* window = SDL_CreateWindow("SDL2 Window",
+    SDL_Window* window = SDL_CreateWindow("Diagonals - Triangulação - Improved Hull",
                                           SDL_WINDOWPOS_UNDEFINED,
                                           SDL_WINDOWPOS_UNDEFINED,
                                           1280, 720,
@@ -73,7 +73,8 @@ int runWindow(vector<vector<Ponto>> vvp, vector<vector<Triangulo>> vt){
             }
         }
 
-        cout << counter << endl;
+        //cout << counter << endl;
+        counter++;
         counter++;
 
         // Set the background color
@@ -92,11 +93,9 @@ int runWindow(vector<vector<Ponto>> vvp, vector<vector<Triangulo>> vt){
             }
         }
 
-        // Set the color for the lines
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);  // Black color
-
-        // Loop through each point in the vector (except the last one)
+        //// Loop through each point in the vector (except the last one)
         //for (int i = 0; i < points.size(); i++){
+        //    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         //    for (size_t j = 0; j < points[i].size() - 1; ++j) {
         //       // Draw a line between the current point and the next point
         //        SDL_RenderDrawLine(renderer, points[i][j].x, points[i][j].y, points[i][j + 1].x, points[i][j + 1].y);
@@ -106,11 +105,11 @@ int runWindow(vector<vector<Ponto>> vvp, vector<vector<Triangulo>> vt){
         //// Draw a line between the last point and the first point to close the loop
         //for (int i = 0; i < points.size(); i++){
         //    SDL_RenderDrawLine(renderer, points[i].back().x, points[i].back().y, points[i].front().x, points[i].front().y);
-        //}
+        //
 
         for (int k = 0; k < pp_triangle.size(); k++){
             for (int i = 0; i < pp_triangle[k].size() ; i++){
-                if (300*k + 60*i < counter)
+                if (200*k + 60*i < counter)
                     if ((i+1)%3 != 0)
                         SDL_RenderDrawLine(renderer, pp_triangle[k][i].x, pp_triangle[k][i].y, pp_triangle[k][i+1].x, pp_triangle[k][i+1].y);
                     else 
